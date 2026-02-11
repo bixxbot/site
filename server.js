@@ -74,8 +74,8 @@ const CONFIG = {
   
   // Cloudflare Turnstile (Captcha)
   cloudflare: {
-    secretkey: "0x4AAAAAACaS6ylXAW-Lne3q7xKOtIYrtVk",
-    sitekey: "0x4AAAAAACaS64vCK9pi3Kfh"
+    secretkey: "0x4AAAAAACIOobaEQNSWNQwz2VwpFUzfy_M",
+    sitekey: "0x4AAAAAACIOoTCHLx6W74Sw"
   }, 
   
   // Pterodactyl Panel (Untuk Server Bot)
