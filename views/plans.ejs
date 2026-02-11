@@ -1,0 +1,146 @@
+<%- include('partials/header') %>
+
+<section class="page-header">
+  <div class="container">
+    <div class="page-badge">
+      <span class="badge-dot"></span>
+      Deploy Server
+    </div>
+    <h1 class="page-title">
+      Pilih <span class="gradient-text">Paket Panel</span>
+    </h1>
+    <p class="page-subtitle">
+      Infrastruktur premium dengan performa tinggi. Pilih paket yang sesuai kebutuhan Anda.
+    </p>
+  </div>
+</section>
+
+<section class="plans-section">
+  <div class="container">
+    <div class="plans-grid">
+      <% plans.forEach((plan, index) => { %>
+        <div class="plan-card <%= plan.id === '4gb' ? 'featured' : '' %>">
+          <% if (plan.id === '4gb') { %>
+            <div class="plan-badge badge-popular">
+              <i class="fas fa-fire"></i> Popular
+            </div>
+          <% } %>
+          
+          <% if (plan.id === 'unlimited') { %>
+            <div class="plan-badge badge-ultimate">
+              <i class="fas fa-crown"></i> Ultimate
+            </div>
+          <% } %>
+          
+          <div class="plan-header">
+            <div class="plan-icon">
+              <i class="fas fa-<%= plan.id === 'unlimited' ? 'infinity' : 'server' %>"></i>
+            </div>
+            <h3 class="plan-name"><%= plan.name %></h3>
+            <div class="plan-price">
+              <span class="price-currency">Rp</span>
+              <span class="price-amount"><%= plan.price.toLocaleString('id-ID') %></span>
+            </div>
+          </div>
+
+          <div class="plan-specs">
+            <div class="spec-row">
+              <i class="fas fa-memory"></i>
+              <div class="spec-info">
+                <span class="spec-label">RAM</span>
+                <span class="spec-value"><%= plan.specs.ram === 0 ? 'Unlimited' : plan.specs.ram + ' MB' %></span>
+              </div>
+            </div>
+            
+            <div class="spec-row">
+              <i class="fas fa-hdd"></i>
+              <div class="spec-info">
+                <span class="spec-label">Storage</span>
+                <span class="spec-value"><%= plan.specs.disk === 0 ? 'Unlimited' : plan.specs.disk + ' MB' %></span>
+              </div>
+            </div>
+            
+            <div class="spec-row">
+              <i class="fas fa-microchip"></i>
+              <div class="spec-info">
+                <span class="spec-label">CPU</span>
+                <span class="spec-value"><%= plan.specs.cpu === 0 ? 'Unlimited' : plan.specs.cpu + '%' %></span>
+              </div>
+            </div>
+            
+            <div class="spec-row">
+              <i class="fas fa-database"></i>
+              <div class="spec-info">
+                <span class="spec-label">Backup Slots</span>
+                <span class="spec-value">5 Slots</span>
+              </div>
+            </div>
+            
+            <div class="spec-row">
+              <i class="fas fa-shield-halved"></i>
+              <div class="spec-info">
+                <span class="spec-label">Protection</span>
+                <span class="spec-value">Anti-DDoS</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="plan-features">
+            <div class="feature-item">
+              <i class="fas fa-check-circle"></i>
+              <span>Instant Activation</span>
+            </div>
+            <div class="feature-item">
+              <i class="fas fa-check-circle"></i>
+              <span>24/7 Support</span>
+            </div>
+            <div class="feature-item">
+              <i class="fas fa-check-circle"></i>
+              <span>Full SFTP Access</span>
+            </div>
+          </div>
+
+          <a href="/checkout/<%= plan.id %>" class="btn btn-primary btn-block">
+            <span>Deploy Now</span>
+            <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      <% }) %>
+    </div>
+
+        <!-- Panel Products CTA -->
+    <div style="margin-top: 60px; text-align: center;">
+      <div style="display: inline-block; background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 16px; padding: 32px; max-width: 600px;">
+        <div style="font-size: 2.5rem; margin-bottom: 16px;">👑</div>
+        <h3 style="font-size: 1.5rem; margin-bottom: 12px; color: var(--text-primary);">Mau Jadi Reseller atau Admin?</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 24px; line-height: 1.6;">
+          Dapatkan akses eksklusif ke grup reseller/admin dengan harga spesial. 
+          Margin keuntungan hingga 50%!
+        </p>
+        <a href="/panel-products" class="btn btn-primary btn-lg" style="background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);">
+          <i class="fas fa-crown"></i>
+          <span>Lihat Paket Akses</span>
+        </a>
+      </div>
+    </div>
+
+
+    <!-- Info Box -->
+    <div class="info-box">
+      <div class="info-header">
+        <i class="fas fa-circle-info"></i>
+        <span>Informasi Penting</span>
+      </div>
+      <div class="info-body">
+        <ul class="info-list">
+          <li><i class="fas fa-check"></i> Panel otomatis aktif setelah pembayaran terverifikasi</li>
+          <li><i class="fas fa-check"></i> Data akses dikirim ke email yang Anda daftarkan</li>
+          <li><i class="fas fa-check"></i> Pembayaran via QRIS (All E-wallet & Mobile Banking)</li>
+          <li><i class="fas fa-check"></i> Garansi uang kembali jika panel tidak aktif dalam 5 menit</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

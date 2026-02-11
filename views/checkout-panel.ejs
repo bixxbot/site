@@ -1,0 +1,194 @@
+<%- include('partials/header') %>
+
+<section class="page-header">
+  <div class="container">
+    <div class="page-badge">
+      <span class="badge-dot"></span>
+      Checkout
+    </div>
+    <h1 class="page-title">
+      Checkout <span class="gradient-text"><%= product.name %></span>
+    </h1>
+    <p class="page-subtitle">
+      Lengkapi data berikut untuk melanjutkan pembayaran
+    </p>
+  </div>
+</section>
+
+<section class="checkout-section" style="padding: 60px 0 100px;">
+  <div class="container">
+    <div class="checkout-grid" style="display: grid; grid-template-columns: 1fr 400px; gap: 40px; max-width: 1000px; margin: 0 auto;">
+      
+      <!-- Form Section -->
+      <div class="checkout-form-wrapper">
+        <div class="card">
+          <div class="card-header">
+            <i class="fas fa-user-circle"></i>
+            <span>Data Pembeli</span>
+          </div>
+          
+          <form id="panelCheckoutForm" style="padding: 24px;">
+            <input type="hidden" id="productType" value="<%= product.id %>">
+            
+            <div class="form-group" style="margin-bottom: 24px;">
+              <label class="form-label" style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-secondary);">
+                <i class="fab fa-telegram" style="color: #0088cc; margin-right: 8px;"></i>
+                Username Telegram
+              </label>
+              <div class="input-wrapper" style="position: relative;">
+                <span style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-weight: 600;">@</span>
+                <input 
+                  type="text" 
+                  id="telegramUsername" 
+                  class="form-input" 
+                  placeholder="username_telegram"
+                  style="padding-left: 40px; width: 100%;"
+                  required
+                >
+              </div>
+              <small style="color: var(--text-muted); font-size: 0.875rem; margin-top: 6px; display: block;">
+                <i class="fas fa-info-circle"></i> Masukkan username tanpa @ (contoh: zaroffc)
+              </small>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 24px;">
+              <label class="form-label" style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-secondary);">
+                <i class="fas fa-shield-alt" style="color: var(--primary-500); margin-right: 8px;"></i>
+                Verifikasi Keamanan
+              </label>
+              <div class="cf-turnstile" data-sitekey="<%= siteKey %>" style="margin-top: 8px;"></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg btn-block" id="submitBtn" style="width: 100%;">
+              <span id="btnText">Buat Pembayaran</span>
+              <i class="fas fa-arrow-right" id="btnIcon"></i>
+              <div class="spinner" id="btnSpinner" style="display: none; width: 20px; height: 20px; border-width: 2px;"></div>
+            </button>
+          </form>
+        </div>
+
+        <div style="margin-top: 24px; padding: 16px; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 12px;">
+          <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <i class="fas fa-exclamation-triangle" style="color: #f59e0b; margin-top: 2px;"></i>
+            <div>
+              <strong style="color: #f59e0b; font-size: 0.9rem;">Perhatian!</strong>
+              <p style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 4px; line-height: 1.5;">
+                Pastikan username Telegram Anda benar. Link grup akan dikirim ke username tersebut setelah pembayaran berhasil.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary Section -->
+      <div class="checkout-summary">
+        <div class="card" style="position: sticky; top: 100px;">
+          <div class="card-header" style="border-bottom: 1px solid var(--border-color);">
+            <i class="fas fa-receipt"></i>
+            <span>Ringkasan Pesanan</span>
+          </div>
+          
+          <div style="padding: 24px;">
+            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border-color);">
+              <div style="width: 60px; height: 60px; background: <%= product.id === 'reseller' ? 'linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%)' : 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' %>; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white;">
+                <i class="fas <%= product.id === 'reseller' ? 'fa-handshake' : 'fa-user-shield' %>"></i>
+              </div>
+              <div>
+                <h3 style="font-size: 1.1rem; margin-bottom: 4px;"><%= product.name %></h3>
+                <p style="color: var(--text-muted); font-size: 0.875rem;"><%= product.description %></p>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.9rem; color: var(--text-secondary);">
+                <span>Harga Produk</span>
+                <span>Rp <%= product.price.toLocaleString('id-ID') %></span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.9rem; color: var(--text-secondary);">
+                <span>Biaya Admin</span>
+                <span style="color: var(--success-500);">Gratis</span>
+              </div>
+            </div>
+
+            <div style="padding-top: 16px; border-top: 2px solid var(--border-color);">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 600; color: var(--text-primary);">Total Pembayaran</span>
+                <span style="font-size: 1.5rem; font-weight: 700; color: var(--primary-400);">
+                  Rp <%= product.price.toLocaleString('id-ID') %>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+<script>
+  document.getElementById('panelCheckoutForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const telegramUsername = document.getElementById('telegramUsername').value.trim();
+    const productType = document.getElementById('productType').value;
+    const turnstileResponse = document.querySelector('[name="cf-turnstile-response"]')?.value;
+    
+    if (!telegramUsername) {
+      showToast('Username Telegram wajib diisi!', 'error');
+      return;
+    }
+    
+    if (!turnstileResponse) {
+      showToast('Harap selesaikan verifikasi keamanan!', 'error');
+      return;
+    }
+    
+    // Loading state
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const btnIcon = document.getElementById('btnIcon');
+    const btnSpinner = document.getElementById('btnSpinner');
+    
+    submitBtn.disabled = true;
+    btnText.textContent = 'Memproses...';
+    btnIcon.style.display = 'none';
+    btnSpinner.style.display = 'inline-block';
+    
+    try {
+      const response = await fetch('/api/payment/create-panel', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productType,
+          telegramUsername,
+          recaptchaResponse: turnstileResponse
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        sessionStorage.setItem('panelPaymentData', JSON.stringify(data));
+        window.location.href = `/payment-panel/${data.orderId}`;
+      } else {
+        showToast(data.message || 'Gagal membuat pembayaran', 'error');
+        turnstile.reset();
+      }
+      
+    } catch (err) {
+      console.error('Error:', err);
+      showToast('Terjadi kesalahan. Coba lagi.', 'error');
+      turnstile.reset();
+    } finally {
+      submitBtn.disabled = false;
+      btnText.textContent = 'Buat Pembayaran';
+      btnIcon.style.display = 'inline-block';
+      btnSpinner.style.display = 'none';
+    }
+  });
+</script>
+
+<%- include('partials/footer') %>

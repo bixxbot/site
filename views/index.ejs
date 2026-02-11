@@ -1,0 +1,200 @@
+<%- include('partials/header') %>
+
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Next Generation Hosting
+        </div>
+        <h1 class="hero-title">
+          Hosting Panel <span class="gradient-text">Premium</span>
+        </h1>
+        <p class="hero-subtitle">
+          Infrastruktur server berkinerja tinggi untuk bot Discord, aplikasi Node.js, dan server game. 
+          Didukung oleh proteksi Anti-DDoS canggih dan uptime 99.9%.
+        </p>
+        <div class="hero-buttons">
+          <a href="/plans" class="btn btn-primary btn-lg">
+            <span>Mulai Sekarang</span>
+            <i class="fas fa-arrow-right"></i>
+          </a>
+          <a href="#features" class="btn btn-secondary btn-lg">
+            <span>Pelajari Lebih</span>
+            <i class="fas fa-chevron-down"></i>
+          </a>
+        </div>
+      </div>
+      
+      <div class="hero-visual">
+        <div class="hero-card">
+          <div class="card-header">
+            <div class="status-indicator">
+              System Operational
+            </div>
+          </div>
+          <div class="card-stats">
+            <div class="stat-box">
+              <div class="stat-value">99.9%</div>
+              <div class="stat-label">Uptime</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value">< 20ms</div>
+              <div class="stat-label">Latency</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value">NVMe</div>
+              <div class="stat-label">Storage</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value">DDoS</div>
+              <div class="stat-label">Protected</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="floating-element float-1">
+          <i class="fas fa-shield-halved"></i>
+          <span>Anti-DDoS Active</span>
+        </div>
+        
+        <div class="floating-element float-2">
+          <i class="fas fa-bolt"></i>
+          <span>Instant Deploy</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="features-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Kenapa Memilih Kami?</h2>
+      <p class="section-subtitle">
+        Infrastruktur kelas enterprise dengan harga yang terjangkau untuk komunitas Anda.
+      </p>
+    </div>
+    
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-microchip"></i>
+        </div>
+        <h3>CPU Optimized</h3>
+        <p>Resource prosesor yang terisolasi menjamin performa maksimal tanpa gangguan "noisy neighbor".</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-shield-halved"></i>
+        </div>
+        <h3>DDoS Protection</h3>
+        <p>Sistem mitigasi otomatis yang memfilter traffic jahat dalam hitungan detik. Server tetap online.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-server"></i>
+        </div>
+        <h3>Pterodactyl Panel</h3>
+        <p>Control panel standar industri yang user-friendly, responsive, dan kaya fitur untuk manajemen.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-check-double"></i>
+        </div>
+        <h3>VPS Legal</h3>
+        <p>Infrastruktur legal dan berbayar. Menjamin data Anda aman dari suspend sepihak provider.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number" data-target="99">0</div>
+        <span>%</span>
+        <div class="stat-desc">Uptime Guarantee</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="500">0</div>
+        <span>+</span>
+        <div class="stat-desc">Active Users</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="1000">0</div>
+        <span>+</span>
+        <div class="stat-desc">Servers Created</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="24">0</div>
+        <span>/7</span>
+        <div class="stat-desc">Support Ready</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-card">
+      <div class="cta-content">
+        <div class="cta-icon">
+          <i class="fas fa-rocket"></i>
+        </div>
+        <h2>Siap untuk Memulai?</h2>
+        <p>Deploy server Anda dalam hitungan menit dengan sistem pembayaran otomatis dan instant activation.</p>
+        <a href="/plans" class="btn btn-white btn-lg">
+          <span>Lihat Paket</span>
+          <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Animated Counter
+  const counters = document.querySelectorAll('.stat-number');
+  const speed = 200;
+  
+  const animateCounters = () => {
+    counters.forEach(counter => {
+      const target = +counter.getAttribute('data-target');
+      const count = +counter.innerText;
+      const inc = target / speed;
+      
+      if (count < target) {
+        counter.innerText = Math.ceil(count + inc);
+        setTimeout(animateCounters, 20);
+      } else {
+        counter.innerText = target;
+      }
+    });
+  };
+  
+  // Trigger animation when in viewport
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCounters();
+        observer.unobserve(entry.target);
+      }
+    });
+  });
+  
+  document.querySelector('.stats-section').querySelectorAll('.stat-item').forEach(item => {
+    observer.observe(item);
+  });
+</script>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,215 @@
+<%- include('partials/header') %>
+
+<section class="payment-section" style="padding: 140px 0 80px;">
+  <div class="container">
+    <!-- Status -->
+    <div class="payment-status" id="statusCard">
+      <div class="status-icon">
+        <i class="fas fa-clock"></i>
+      </div>
+      <h2 style="font-size: 1.75rem; margin-bottom: 8px;">Menunggu Pembayaran</h2>
+      <p style="color: var(--text-secondary);">Scan QR Code di bawah untuk menyelesaikan pembayaran</p>
+    </div>
+
+    <div class="payment-content">
+      <!-- QR Section -->
+      <div class="qr-section">
+        <div class="qr-header">
+          <span><i class="fas fa-qrcode"></i> QRIS Payment</span>
+          <span style="font-size: 0.875rem; color: var(--text-muted);">Auto-detect</span>
+        </div>
+        <div class="qr-body">
+          <div class="qr-display">
+            <div id="qrLoader" style="padding: 40px;">
+              <div class="spinner" style="margin: 0 auto 16px;"></div>
+              <p style="color: var(--text-muted); font-size: 0.9rem;">Generating QR...</p>
+            </div>
+            <img id="qrImage" style="max-width: 250px; display: none;" alt="QRIS">
+          </div>
+          
+          <div class="qr-instructions">
+            <h4><i class="fas fa-mobile-screen"></i> Cara Pembayaran</h4>
+            <ol>
+              <li>Buka aplikasi <strong>e-wallet</strong> atau <strong>m-banking</strong></li>
+              <li>Pilih menu <strong>"Scan QR"</strong> atau <strong>"QRIS"</strong></li>
+              <li>Scan QR Code di atas</li>
+              <li>Konfirmasi pembayaran</li>
+              <li>Akses grup akan otomatis dikirim ke Telegram Anda</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- Details -->
+      <div class="payment-details">
+        <div class="detail-card">
+          <div class="detail-header">
+            <i class="fas fa-file-invoice"></i> Detail Pembayaran
+          </div>
+          <div class="detail-body">
+            <div class="detail-row">
+              <span class="label">Order ID</span>
+              <span class="value" id="orderId" style="font-family: var(--font-mono);">-</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Produk</span>
+              <span class="value" id="productName">-</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Username TG</span>
+              <span class="value" id="telegramUsername">-</span>
+            </div>
+            <div class="detail-row total">
+              <span class="label">Total</span>
+              <span class="value" id="amount">Rp 0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timer-card">
+          <i class="fas fa-hourglass-half"></i>
+          <div>
+            <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 4px;">Batas Waktu</div>
+            <div class="timer-display" id="timer">05:00</div>
+            <small style="color: var(--text-muted);">Selesaikan sebelum waktu habis</small>
+          </div>
+        </div>
+
+        <div class="help-card">
+          <i class="fas fa-headset"></i>
+          <div style="flex-grow: 1;">
+            <div style="font-weight: 600; margin-bottom: 4px;">Butuh Bantuan?</div>
+            <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 12px;">Hubungi support kami</p>
+            <a href="https://wa.me/6281234567890" class="btn btn-secondary btn-sm" target="_blank" style="padding: 8px 16px; font-size: 0.875rem;">
+              <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  let paymentData = null;
+  let checkInterval = null;
+  let timerInterval = null;
+  let timeLeft = 300;
+
+  function loadPaymentData() {
+    const data = sessionStorage.getItem('panelPaymentData');
+    if (!data) {
+      showToast('Data pembayaran tidak ditemukan', 'error');
+      setTimeout(() => window.location.href = '/panel-products', 2000);
+      return;
+    }
+    
+    paymentData = JSON.parse(data);
+    
+    document.getElementById('orderId').textContent = paymentData.orderId;
+    document.getElementById('productName').textContent = paymentData.productName;
+    document.getElementById('telegramUsername').textContent = '@' + paymentData.telegramUsername;
+    document.getElementById('amount').textContent = `Rp ${paymentData.amount.toLocaleString('id-ID')}`;
+    
+    const qrImage = document.getElementById('qrImage');
+    qrImage.src = paymentData.qrisUrl;
+    qrImage.onload = () => {
+      document.getElementById('qrLoader').style.display = 'none';
+      qrImage.style.display = 'block';
+    };
+    
+    checkPaymentStatus();
+    startTimer();
+  }
+
+  function checkPaymentStatus() {
+    let attempts = 0;
+    
+    checkInterval = setInterval(async () => {
+      if (attempts >= 100) {
+        clearInterval(checkInterval);
+        showExpired();
+        return;
+      }
+      
+      try {
+        const response = await fetch('/api/payment/check-panel', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            orderId: paymentData.orderId,
+            amount: paymentData.amount,
+            productType: paymentData.productType,
+            telegramUsername: paymentData.telegramUsername
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+          clearInterval(checkInterval);
+          clearInterval(timerInterval);
+          showSuccess(data.panel);
+        } else if (data.status === 'failed') {
+          clearInterval(checkInterval);
+          clearInterval(timerInterval);
+          showFailed();
+        }
+        
+        attempts++;
+      } catch (err) {
+        console.error('Check error:', err);
+      }
+    }, 3000);
+  }
+
+  function startTimer() {
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+      document.getElementById('timer').textContent = 
+        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        clearInterval(checkInterval);
+        showExpired();
+      }
+    }, 1000);
+  }
+
+  function showSuccess(panel) {
+    sessionStorage.setItem('panelAccessData', JSON.stringify(panel));
+    window.location.href = '/success-panel';
+  }
+
+  function showFailed() {
+    const statusCard = document.getElementById('statusCard');
+    statusCard.innerHTML = `
+      <div class="status-icon error">
+        <i class="fas fa-times-circle"></i>
+      </div>
+      <h2 style="font-size: 1.75rem; margin-bottom: 8px;">Pembayaran Gagal</h2>
+      <p style="color: var(--text-secondary); margin-bottom: 20px;">Pembayaran Anda gagal atau expired</p>
+      <a href="/panel-products" class="btn btn-primary">Kembali ke Panel Products</a>
+    `;
+  }
+
+  function showExpired() {
+    const statusCard = document.getElementById('statusCard');
+    statusCard.innerHTML = `
+      <div class="status-icon error">
+        <i class="fas fa-clock"></i>
+      </div>
+      <h2 style="font-size: 1.75rem; margin-bottom: 8px;">Waktu Habis</h2>
+      <p style="color: var(--text-secondary); margin-bottom: 20px;">Batas waktu pembayaran telah habis</p>
+      <a href="/panel-products" class="btn btn-primary">Coba Lagi</a>
+    `;
+  }
+
+  loadPaymentData();
+</script>
+
+<%- include('partials/footer') %>

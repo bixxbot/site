@@ -1,0 +1,186 @@
+<%- include('partials/header') %>
+
+<section class="page-header">
+  <div class="container">
+    <div class="page-badge">
+      <span class="badge-dot"></span>
+      Panel Access
+    </div>
+    <h1 class="page-title">
+      Akses <span class="gradient-text">Reseller & Admin</span>
+    </h1>
+    <p class="page-subtitle">
+      Bergabung dengan grup eksklusif untuk reseller dan admin panel.
+    </p>
+  </div>
+</section>
+
+<section class="plans-section">
+  <div class="container">
+    <div class="plans-grid" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); max-width: 900px; margin: 0 auto;">
+      
+      <!-- Reseller Panel Card -->
+      <div class="plan-card featured">
+        <div class="plan-badge badge-popular">
+          <i class="fas fa-users"></i> Best Seller
+        </div>
+        
+        <div class="plan-header">
+          <div class="plan-icon" style="background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);">
+            <i class="fas fa-handshake"></i>
+          </div>
+          <h3 class="plan-name">Reseller Panel</h3>
+          <div class="plan-price">
+            <span class="price-currency">Rp</span>
+            <span class="price-amount"><%= products.find(p => p.id === 'reseller').price.toLocaleString('id-ID') %></span>
+          </div>
+        </div>
+
+        <div class="plan-specs">
+          <div class="spec-row">
+            <i class="fas fa-check-circle" style="color: var(--success-500);"></i>
+            <div class="spec-info">
+              <span class="spec-label">Akses Grup Reseller</span>
+              <span class="spec-value">Lifetime</span>
+            </div>
+          </div>
+          
+          <div class="spec-row">
+            <i class="fas fa-check-circle" style="color: var(--success-500);"></i>
+            <div class="spec-info">
+              <span class="spec-label">Harga Reseller</span>
+              <span class="spec-value">Lebih Murah</span>
+            </div>
+          </div>
+          
+          <div class="spec-row">
+            <i class="fas fa-check-circle" style="color: var(--success-500);"></i>
+            <div class="spec-info">
+              <span class="spec-label">Support Prioritas</span>
+              <span class="spec-value">24/7</span>
+            </div>
+          </div>
+          
+          <div class="spec-row">
+            <i class="fas fa-check-circle" style="color: var(--success-500);"></i>
+            <div class="spec-info">
+              <span class="spec-label">Update Produk</span>
+              <span class="spec-value">Terbaru</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="plan-features">
+          <div class="feature-item">
+            <i class="fas fa-star"></i>
+            <span>Cocok untuk bisnis panel</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-star"></i>
+            <span>Margin keuntungan tinggi</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-star"></i>
+            <span>Tools marketing included</span>
+          </div>
+        </div>
+
+        <a href="/checkout-panel/reseller" class="btn btn-primary btn-block">
+          <span>Beli Akses Reseller</span>
+          <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <!-- Admin Panel Card -->
+      <div class="plan-card">
+        <div class="plan-badge badge-ultimate">
+          <i class="fas fa-crown"></i> Premium
+        </div>
+        
+        <div class="plan-header">
+          <div class="plan-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+            <i class="fas fa-user-shield"></i>
+          </div>
+          <h3 class="plan-name">Admin Panel</h3>
+          <div class="plan-price">
+            <span class="price-currency">Rp</span>
+            <span class="price-amount"><%= products.find(p => p.id === 'admin').price.toLocaleString('id-ID') %></span>
+          </div>
+        </div>
+
+        <div class="plan-specs">
+          <div class="spec-row">
+            <i class="fas fa-check-circle" style="color: var(--success-500);"></i>
+            <div class="spec-info">
+              <span class="spec-label">Akses Grup Admin</span>
+              <span class="spec-value">Lifetime</span>
+            </div>
+          </div>
+          
+          <div class="spec-row">
+            <i class="fas fa-check-circle" style="color: var(--success-500);"></i>
+            <div class="spec-info">
+              <span class="spec-label">Manage Server</span>
+              <span class="spec-value">Full Control</span>
+            </div>
+          </div>
+          
+          <div class="spec-row">
+            <i class="fas fa-check-circle" style="color: var(--success-500);"></i>
+            <div class="spec-info">
+              <span class="spec-label">Harga Termurah</span>
+              <span class="spec-value">Super Profit</span>
+            </div>
+          </div>
+          
+          <div class="spec-row">
+            <i class="fas fa-check-circle" style="color: var(--success-500);"></i>
+            <div class="spec-info">
+              <span class="spec-label">Direct Support</span>
+              <span class="spec-value">Owner</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="plan-features">
+          <div class="feature-item">
+            <i class="fas fa-crown"></i>
+            <span>Akses fitur eksklusif</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-crown"></i>
+            <span>Custom branding panel</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-crown"></i>
+            <span>API access included</span>
+          </div>
+        </div>
+
+        <a href="/checkout-panel/admin" class="btn btn-primary btn-block" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+          <span>Beli Akses Admin</span>
+          <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Info Box -->
+    <div class="info-box" style="max-width: 900px; margin: 40px auto 0;">
+      <div class="info-header">
+        <i class="fas fa-circle-info"></i>
+        <span>Informasi Penting</span>
+      </div>
+      <div class="info-body">
+        <ul class="info-list">
+          <li><i class="fas fa-check"></i> Akses grup akan diberikan setelah pembayaran terverifikasi</li>
+          <li><i class="fas fa-check"></i> Pastikan username Telegram Anda valid dan aktif</li>
+          <li><i class="fas fa-check"></i> Link grup akan dikirim ke bot Telegram @${telegramUsername}</li>
+          <li><i class="fas fa-check"></i> Garansi uang kembali jika akses tidak diberikan dalam 1 jam</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

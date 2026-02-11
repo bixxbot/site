@@ -1,0 +1,201 @@
+<%- include('partials/header') %>
+
+<section class="success-section">
+  <div class="container">
+    <div class="success-icon">
+      <i class="fas fa-check"></i>
+    </div>
+    
+    <h1 class="success-title">
+      Pembayaran <span class="gradient-text">Berhasil!</span>
+    </h1>
+    <p class="success-subtitle">
+      Panel Anda telah berhasil dibuat dan siap digunakan
+    </p>
+
+    <!-- Credentials -->
+    <div class="credentials-card">
+      <div class="credentials-header">
+        <i class="fas fa-key"></i>
+        <span>Data Akses Panel</span>
+      </div>
+      <div class="credentials-body">
+        <div class="credential-item">
+          <div class="credential-icon">
+            <i class="fas fa-id-card"></i>
+          </div>
+          <div class="credential-info">
+            <div class="credential-label">Server ID</div>
+            <div class="credential-value" id="serverId">-</div>
+          </div>
+        </div>
+
+        <div class="credential-item">
+          <div class="credential-icon">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="credential-info">
+            <div class="credential-label">Username</div>
+            <div class="credential-value" id="username">-</div>
+          </div>
+        </div>
+
+        <div class="credential-item">
+          <div class="credential-icon">
+            <i class="fas fa-lock"></i>
+          </div>
+          <div class="credential-info">
+            <div class="credential-label">Password</div>
+            <div class="credential-value password">
+              <span id="passwordText">••••••••</span>
+              <button class="btn-icon" onclick="togglePassword()" title="Toggle Password">
+                <i class="fas fa-eye" id="eyeIcon"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="credential-item">
+          <div class="credential-icon">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <div class="credential-info">
+            <div class="credential-label">Email</div>
+            <div class="credential-value" id="email">-</div>
+          </div>
+        </div>
+
+        <div class="credential-item">
+          <div class="credential-icon">
+            <i class="fas fa-globe"></i>
+          </div>
+          <div class="credential-info">
+            <div class="credential-label">Panel URL</div>
+            <a href="#" id="panelUrl" class="credential-value" style="color: var(--primary-400);" target="_blank">-</a>
+          </div>
+        </div>
+
+        <button class="btn btn-secondary btn-block" onclick="copyAllCredentials()" style="margin-top: 8px;">
+          <i class="fas fa-copy"></i>
+          <span>Copy Semua Data</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Next Steps -->
+    <h3 style="font-size: 1.25rem; margin-bottom: 24px; color: var(--text-secondary);">
+      <i class="fas fa-list-check"></i> Langkah Selanjutnya
+    </h3>
+    
+    <div class="next-steps">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h4>Login ke Panel</h4>
+        <p>Klik panel URL dan login menggunakan username & password Anda</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h4>Upload Files</h4>
+        <p>Upload file bot atau aplikasi Anda melalui SFTP atau file manager</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <h4>Start Server</h4>
+        <p>Jalankan server dan aplikasi Anda akan online 24/7</p>
+      </div>
+    </div>
+
+    <!-- Warning -->
+    <div class="warning-box">
+      <i class="fas fa-triangle-exclamation"></i>
+      <div>
+        <strong>Penting!</strong>
+        <p>Simpan data akses ini dengan baik. Kami juga telah mengirimkan informasi lengkap ke email Anda.</p>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="action-buttons">
+      <a href="#" id="loginButton" class="btn btn-primary btn-lg" target="_blank">
+        <i class="fas fa-sign-in-alt"></i>
+        <span>Login ke Panel</span>
+      </a>
+      <a href="/plans" class="btn btn-secondary btn-lg">
+        <i class="fas fa-shopping-cart"></i>
+        <span>Order Lagi</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  let panelData = null;
+  let passwordVisible = false;
+
+  function loadPanelData() {
+    const data = sessionStorage.getItem('panelData');
+    if (!data) {
+      showToast('Data panel tidak ditemukan', 'error');
+      setTimeout(() => window.location.href = '/plans', 2000);
+      return;
+    }
+    
+    panelData = JSON.parse(data);
+    
+    document.getElementById('serverId').textContent = panelData.serverId;
+    document.getElementById('username').textContent = panelData.username;
+    document.getElementById('passwordText').dataset.password = panelData.password;
+    document.getElementById('email').textContent = panelData.email;
+    document.getElementById('panelUrl').textContent = panelData.domain;
+    document.getElementById('panelUrl').href = panelData.domain;
+    document.getElementById('loginButton').href = panelData.domain;
+  }
+
+  function togglePassword() {
+    const passwordText = document.getElementById('passwordText');
+    const eyeIcon = document.getElementById('eyeIcon');
+    const password = passwordText.dataset.password;
+    
+    passwordVisible = !passwordVisible;
+    
+    if (passwordVisible) {
+      passwordText.textContent = password;
+      eyeIcon.className = 'fas fa-eye-slash';
+    } else {
+      passwordText.textContent = '••••••••';
+      eyeIcon.className = 'fas fa-eye';
+    }
+  }
+
+  async function copyAllCredentials() {
+    const text = `
+╔════════════════════════════════════════╗
+║     ZAROFFC PANEL - ACCESS INFO        ║
+╚════════════════════════════════════════╝
+
+Server ID : ${panelData.serverId}
+Username  : ${panelData.username}
+Password  : ${panelData.password}
+Email     : ${panelData.email}
+Panel URL : ${panelData.domain}
+
+⚠️  Simpan informasi ini dengan baik!
+📧 Data juga telah dikirim ke email Anda
+
+═══════════════════════════════════════
+    `.trim();
+    
+    try {
+      await navigator.clipboard.writeText(text);
+      showToast('Data berhasil disalin!', 'success');
+    } catch (err) {
+      showToast('Gagal menyalin data', 'error');
+    }
+  }
+
+  loadPanelData();
+</script>
+
+<%- include('partials/footer') %>
